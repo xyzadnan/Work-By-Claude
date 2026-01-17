@@ -182,7 +182,25 @@ export default function TerminalApp() {
   return (
     <div className="min-h-screen p-4 md:p-8 flex items-center justify-center" style={{ backgroundColor: "#d5714f" }}>
       <div className="w-full max-w-6xl">
-        <p className="text-white font-mono text-sm mb-4">CA:922vUwwGf1eY96YeNUFP4ddq7kCQiLMcATxaRYv4pump</p>
+        {/* Contract Address Terminal */}
+        <div className="flex justify-center mb-6">
+          <div className="w-full max-w-2xl rounded-lg overflow-hidden shadow-2xl border border-black/20">
+            <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+              </div>
+              <span className="text-gray-400 text-sm ml-2 font-mono">CA-Contract-Address</span>
+            </div>
+            <div className="bg-gray-900 p-4 font-mono text-sm">
+              <div className="text-green-400 break-all">
+                922vUwwGf1eY96YeNUFP4ddq7kCQiLMcATxaRYv4pump
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="flex justify-center mb-6">
           <iframe
             src="https://platform.twitter.com/embed/Tweet.html?id=1957918015263305946&theme=dark"
