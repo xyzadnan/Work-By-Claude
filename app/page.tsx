@@ -196,7 +196,7 @@ export default function TerminalApp() {
     <div className="min-h-screen p-4 md:p-8 flex items-center justify-center" style={{ backgroundColor: "#d5714f" }}>
       <div className="w-full max-w-6xl relative">
         {/* Links Terminal - Positioned at top left */}
-        <div className="absolute top-0 -left-[320px] w-[280px] rounded-lg overflow-hidden shadow-2xl border border-black/20 z-10">
+        <div className="absolute top-0 -left-[160px] w-[280px] rounded-lg overflow-hidden shadow-2xl border border-black/20 z-10">
           <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
             <div className="flex gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500" />
