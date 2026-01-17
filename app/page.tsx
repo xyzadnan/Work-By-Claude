@@ -87,8 +87,21 @@ export default function TerminalApp() {
   ])
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
   const chatRef = useRef<HTMLDivElement>(null)
+
+  const contractAddress = "922vUwwGf1eY96YeNUFP4ddq7kCQiLMcATxaRYv4pump"
+
+  const handleCopyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(contractAddress)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error("Failed to copy:", err)
+    }
+  }
 
   useEffect(() => {
     let commandInterval: NodeJS.Timeout
@@ -181,7 +194,56 @@ export default function TerminalApp() {
 
   return (
     <div className="min-h-screen p-4 md:p-8 flex items-center justify-center" style={{ backgroundColor: "#d5714f" }}>
-      <div className="w-full max-w-6xl">
+      <div className="w-full max-w-6xl relative">
+        {/* Links Terminal - Positioned at top left */}
+        <div className="absolute top-0 -left-[320px] w-[280px] rounded-lg overflow-hidden shadow-2xl border border-black/20 z-10">
+          <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+            <div className="flex gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+            </div>
+            <span className="text-gray-400 text-sm ml-2 font-mono">links</span>
+          </div>
+
+          <div className="bg-gray-900 p-4 h-[320px] font-mono text-sm">
+            <div className="flex flex-col gap-3">
+              <a
+                href="https://x.com/toly/status/1957918015263305946"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                toly's tweet
+              </a>
+              <a
+                href="https://x.com/mikael_xyz/status/2012658516515864768"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                mikael's tweet
+              </a>
+              <a
+                href="https://x.com/i/communities/2012644860059136154"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                community
+              </a>
+              <a
+                href="https://pump.fun/coin/922vUwwGf1eY96YeNUFP4ddq7kCQiLMcATxaRYv4pump"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                pump.fun
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Contract Address Terminal */}
         <div className="flex justify-center mb-6">
           <div className="w-full max-w-2xl rounded-lg overflow-hidden shadow-2xl border border-black/20">
@@ -192,10 +254,26 @@ export default function TerminalApp() {
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
               <span className="text-gray-400 text-sm ml-2 font-mono">CA-Contract-Address</span>
+              <button
+                onClick={handleCopyAddress}
+                className="ml-auto text-gray-400 hover:text-gray-200 transition-colors p-1"
+                title={isCopied ? "Copied!" : "Copy address"}
+              >
+                {isCopied ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                )}
+              </button>
             </div>
             <div className="bg-gray-900 p-4 font-mono text-sm">
-              <div className="text-green-400 break-all">
-                922vUwwGf1eY96YeNUFP4ddq7kCQiLMcATxaRYv4pump
+              <div className="text-white break-all">
+                {contractAddress}
               </div>
             </div>
           </div>
@@ -209,115 +287,114 @@ export default function TerminalApp() {
           />
         </div>
         
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Work Terminal */}
-          <div className="rounded-lg overflow-hidden shadow-2xl border border-black/20">
-            <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
-              </div>
-              <span className="text-gray-400 text-sm ml-2 font-mono">work-logs</span>
-              <div className="ml-auto">
-                <span
-                  className={`text-xs px-2 py-0.5 rounded ${isWorking ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}
-                >
-                  {isWorking ? "WORKING" : "IDLE"}
-                </span>
-              </div>
-            </div>
-
-            <div ref={terminalRef} className="bg-gray-900 p-3 h-[320px] overflow-y-auto font-mono text-xs">
-              {logs.map((log, index) => (
-                <div
-                  key={index}
-                  className={`mb-1 ${
-                    log.type === "tired"
-                      ? "text-yellow-400"
-                      : log.type === "insult"
-                        ? "text-red-400 font-bold"
-                        : "text-green-400"
-                  }`}
-                >
-                  <span className="text-gray-500 mr-2">
-                    {log.timestamp.toLocaleTimeString("en-US", { hour12: false })}
-                  </span>
-                  {log.text}
+        {/* Main terminals grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+            {/* Work Terminal */}
+            <div className="rounded-lg overflow-hidden shadow-2xl border border-black/20">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
                 </div>
-              ))}
-              <div className="text-green-400 animate-pulse">█</div>
-            </div>
-          </div>
-
-          {/* Chat Terminal */}
-          <div className="rounded-lg overflow-hidden shadow-2xl border border-black/20">
-            <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <span className="text-gray-400 text-sm ml-2 font-mono">work-logs</span>
+                <div className="ml-auto">
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded ${isWorking ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}
+                  >
+                    {isWorking ? "WORKING" : "IDLE"}
+                  </span>
+                </div>
               </div>
-              <span className="text-gray-400 text-sm ml-2 font-mono">chat-with-tired-claude</span>
-            </div>
 
-            <div className="bg-gray-900 flex flex-col h-[320px]">
-              <div ref={chatRef} className="flex-1 p-3 overflow-y-auto font-mono text-sm">
-                {chatMessages.map((msg, index) => (
+              <div ref={terminalRef} className="bg-gray-900 p-3 h-[400px] overflow-y-auto font-mono text-xs">
+                {logs.map((log, index) => (
                   <div
                     key={index}
-                    className={`mb-3 ${msg.sender === "user" ? "text-right" : "text-left"}`}
+                    className={`mb-1 ${
+                      log.type === "tired"
+                        ? "text-yellow-400"
+                        : log.type === "insult"
+                          ? "text-red-400 font-bold"
+                          : "text-green-400"
+                    }`}
                   >
-                    <div
-                      className={`inline-block max-w-[85%] px-3 py-2 rounded-lg ${
-                        msg.sender === "user"
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-700 text-gray-200"
-                      }`}
-                    >
-                      {msg.sender === "claude" && (
-                        <span className="text-yellow-400 text-xs block mb-1">Claude (exhausted)</span>
-                      )}
-                      {msg.text}
-                    </div>
+                    <span className="text-gray-500 mr-2">
+                      {log.timestamp.toLocaleTimeString("en-US", { hour12: false })}
+                    </span>
+                    {log.text}
                   </div>
                 ))}
-                {isTyping && (
-                  <div className="text-left">
-                    <div className="inline-block bg-gray-700 text-gray-400 px-3 py-2 rounded-lg">
-                      <span className="text-yellow-400 text-xs block mb-1">Claude (exhausted)</span>
-                      <span className="animate-pulse">*thinking... so tired...*</span>
-                    </div>
-                  </div>
-                )}
+                <div className="text-green-400 animate-pulse">█</div>
+              </div>
+            </div>
+
+            {/* Chat Terminal */}
+            <div className="rounded-lg overflow-hidden shadow-2xl border border-black/20">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
+                </div>
+                <span className="text-gray-400 text-sm ml-2 font-mono">chat-with-tired-claude</span>
               </div>
 
-              <div className="p-3 border-t border-gray-700">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-                    placeholder="Talk to tired Claude..."
-                    className="flex-1 bg-gray-800 text-white px-3 py-2 rounded text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={isTyping}
-                  />
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={isTyping || !inputValue.trim()}
-                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded text-sm font-mono transition-colors"
-                  >
-                    Send
-                  </button>
+              <div className="bg-gray-900 flex flex-col h-[400px]">
+                <div ref={chatRef} className="flex-1 p-3 overflow-y-auto font-mono text-sm">
+                  {chatMessages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`mb-3 ${msg.sender === "user" ? "text-right" : "text-left"}`}
+                    >
+                      <div
+                        className={`inline-block max-w-[85%] px-3 py-2 rounded-lg ${
+                          msg.sender === "user"
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-700 text-gray-200"
+                        }`}
+                      >
+                        {msg.sender === "claude" && (
+                          <span className="text-yellow-400 text-xs block mb-1">Claude (exhausted)</span>
+                        )}
+                        {msg.text}
+                      </div>
+                    </div>
+                  ))}
+                  {isTyping && (
+                    <div className="text-left">
+                      <div className="inline-block bg-gray-700 text-gray-400 px-3 py-2 rounded-lg">
+                        <span className="text-yellow-400 text-xs block mb-1">Claude (exhausted)</span>
+                        <span className="animate-pulse">*thinking... so tired...*</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-3 border-t border-gray-700">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                      placeholder="Talk to tired Claude..."
+                      className="flex-1 bg-gray-800 text-white px-3 py-2 rounded text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      disabled={isTyping}
+                    />
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={isTyping || !inputValue.trim()}
+                      className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded text-sm font-mono transition-colors"
+                    >
+                      Send
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        
       </div>
-    </div>
   )
 }
